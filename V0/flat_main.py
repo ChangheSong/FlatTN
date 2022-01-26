@@ -6,17 +6,15 @@ fitlog.set_log_dir('logs')
 load_dataset_seed = 100
 fitlog.add_hyper(load_dataset_seed,'load_dataset_seed')
 fitlog.set_rng_seed(load_dataset_seed)
-
 import sys
 sys.path.append('../')
 from load_data import *
-from paths import *
 import argparse
+from paths import *
 from fastNLP.core import Trainer
 # from trainer import Trainer
 from fastNLP.core import Callback
 from V0.models import Lattice_Transformer_SeqLabel, Transformer_SeqLabel
-
 import torch
 import collections
 import torch.optim as optim
@@ -26,7 +24,7 @@ from fastNLP.core.metrics import SpanFPreRecMetric,AccuracyMetric
 from fastNLP.core.callback import WarmupCallback,GradientClipCallback,EarlyStopCallback,FitlogCallback
 from fastNLP import LRScheduler
 from torch.optim.lr_scheduler import LambdaLR
-# from models import LSTM_SeqLabel, LSTM_SeqLabel_True
+# from models import LSTM_SeqLabel,LSTM_SeqLabel_True
 from fastNLP import logger
 from utils import get_peking_time
 from V0.add_lattice import equip_chinese_ner_with_lexicon
@@ -37,6 +35,8 @@ import warnings
 import sys
 
 from utils import print_info
+
+
 
 
 parser = argparse.ArgumentParser()
@@ -63,6 +63,7 @@ parser.add_argument('--bigram_min_freq',default=1,type=int)
 parser.add_argument('--lattice_min_freq',default=1,type=int)
 parser.add_argument('--only_train_min_freq',default=True)
 parser.add_argument('--only_lexicon_in_train',default=False)
+
 
 parser.add_argument('--word_min_freq',default=1,type=int)
 
@@ -140,6 +141,8 @@ parser.add_argument('--embed_dropout_pos',default='0')
 parser.add_argument('--abs_pos_fusion_func',default='nonlinear_add',
                     choices=['add','concat','nonlinear_concat','nonlinear_add','concat_nonlinear','add_nonlinear'])
 
+
+
 parser.add_argument('--dataset', default='weibo', help='weibo|resume|ontonote|msra')
 
 args = parser.parse_args()
@@ -153,6 +156,8 @@ if over_all_dropout>0:
     args.post_dropout = over_all_dropout
     args.ff_dropout = over_all_dropout
     args.attn_dropout = over_all_dropout
+
+
 
 if args.lattice and args.use_rel_pos and args.update_every == 1:
     args.train_clip = True
@@ -194,8 +199,6 @@ raw_dataset_cache_name = os.path.join('cache',args.dataset+
                                       +'load_dataset_seed{}'.format(load_dataset_seed)
                                       )
 
-
-## Add another dataset load function for TN-S (from wenlin) in ../load_data.py 
 if args.dataset == 'ontonotes':
     datasets,vocabs,embeddings = load_ontonotes4ner(ontonote4ner_cn_path,yangjie_rich_pretrain_unigram_path,yangjie_rich_pretrain_bigram_path,
                                                     _refresh=refresh_data,index_token=False,train_clip=args.train_clip,
@@ -271,6 +274,9 @@ elif args.dataset == 'ontonotes':
 
 elif args.dataset == 'msra':
     pass
+
+
+
 
 
 if args.lexicon_name == 'lk':
