@@ -316,11 +316,12 @@ def get_now_time():
 
 def get_bigrams(words):
     result = []
-    for i, w in enumerate(words):
-        if i != len(words)-1:
+    for i,w in enumerate(words):
+        if i!=len(words)-1:
             result.append(words[i]+words[i+1])
         else:
             result.append(words[i]+'<end>')
+
     return result
 
 def print_info(*inp,islog=True,sep=' '):
@@ -381,7 +382,6 @@ def get_crf_zero_init(label_size, include_start_end_trans=False, allowed_transit
     crf = ConditionalRandomField(label_size, include_start_end_trans)
 
     crf.trans_m = nn.Parameter(torch.zeros(size=[label_size, label_size], requires_grad=True))
-
     if crf.include_start_end_trans:
         crf.start_scores = nn.Parameter(torch.zeros(size=[label_size], requires_grad=True))
         crf.end_scores = nn.Parameter(torch.zeros(size=[label_size], requires_grad=True))
