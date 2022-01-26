@@ -3,14 +3,14 @@ sys.path.append('../')
 from paths import *
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--clip_msra', action='store_true')
+parser.add_argument('--clip_msra',action='store_true')
 
 args = parser.parse_args()
 
 lexicon_f = open(yangjie_rich_pretrain_word_path,'r')
 char_f = open(yangjie_rich_pretrain_unigram_path,'r')
 
-output_f = open(yangjie_rich_pretrain_char_and_word_path, 'w')
+output_f = open(yangjie_rich_pretrain_char_and_word_path,'w')
 
 lexicon_lines = lexicon_f.readlines()
 for l in lexicon_lines:
@@ -21,7 +21,6 @@ for l in lexicon_lines:
 char_lines = char_f.readlines()
 for l in char_lines:
     print(l.strip(),file=output_f)
-
 
 def create_cliped_file(fp):
     f = open(fp,'r',encoding='utf-8')
