@@ -1,15 +1,47 @@
-# from fastNLP.embeddings import StaticEmbedding
-# from fastNLP.io import CSVLoader
-# from fastNLP import Const
-# import numpy as np
-# import fitlog
-# import pickle
-
-import os
-
-from fastNLP_module import StaticEmbedding
-from fastNLP import cache_results
+from fastNLP.io import CSVLoader
 from fastNLP import Vocabulary
+from fastNLP import Const
+import numpy as np
+import fitlog
+import pickle
+import os
+from fastNLP import cache_results
+# from fastNLP.embeddings import StaticEmbedding
+from fastNLP_module import StaticEmbedding
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -87,8 +119,8 @@ def load_ontonotes4ner(path,char_embedding_path=None,bigram_embedding_path=None,
 
 
 @cache_results(_cache_fp='cache/resume_ner',_refresh=False)
-def load_resume_ner(path, char_embedding_path=None, bigram_embedding_path=None, index_token=True,
-                    char_min_freq=1, bigram_min_freq=1, only_train_min_freq=0):
+def load_resume_ner(path,char_embedding_path=None,bigram_embedding_path=None,index_token=True,
+                    char_min_freq=1,bigram_min_freq=1,only_train_min_freq=0):
     from fastNLP.io.loader import ConllLoader
     from utils import get_bigrams
 
@@ -108,13 +140,15 @@ def load_resume_ner(path, char_embedding_path=None, bigram_embedding_path=None, 
     datasets['test'] = test_bundle.datasets['train']
 
 
-    datasets['train'].apply_field(get_bigrams, field_name='chars', new_field_name='bigrams')
+    datasets['train'].apply_field(get_bigrams,field_name='chars',new_field_name='bigrams')
     datasets['dev'].apply_field(get_bigrams, field_name='chars', new_field_name='bigrams')
     datasets['test'].apply_field(get_bigrams, field_name='chars', new_field_name='bigrams')
 
     datasets['train'].add_seq_len('chars')
     datasets['dev'].add_seq_len('chars')
     datasets['test'].add_seq_len('chars')
+
+
 
     char_vocab = Vocabulary()
     bigram_vocab = Vocabulary()
@@ -123,18 +157,18 @@ def load_resume_ner(path, char_embedding_path=None, bigram_embedding_path=None, 
     print(len(datasets['dev']))
     print(len(datasets['test']))
     print(len(datasets['train']))
-    char_vocab.from_dataset(datasets['train'], field_name='chars',
+    char_vocab.from_dataset(datasets['train'],field_name='chars',
                             no_create_entry_dataset=[datasets['dev'],datasets['test']] )
-    bigram_vocab.from_dataset(datasets['train'], field_name='bigrams',
+    bigram_vocab.from_dataset(datasets['train'],field_name='bigrams',
                               no_create_entry_dataset=[datasets['dev'],datasets['test']])
-    label_vocab.from_dataset(datasets['train'], field_name='target')
+    label_vocab.from_dataset(datasets['train'],field_name='target')
     if index_token:
-        char_vocab.index_dataset(datasets['train'], datasets['dev'],datasets['test'],
-                                 field_name='chars', new_field_name='chars')
-        bigram_vocab.index_dataset(datasets['train'], datasets['dev'],datasets['test'],
-                                 field_name='bigrams', new_field_name='bigrams')
-        label_vocab.index_dataset(datasets['train'], datasets['dev'],datasets['test'],
-                                 field_name='target', new_field_name='target')
+        char_vocab.index_dataset(datasets['train'],datasets['dev'],datasets['test'],
+                                 field_name='chars',new_field_name='chars')
+        bigram_vocab.index_dataset(datasets['train'],datasets['dev'],datasets['test'],
+                                 field_name='bigrams',new_field_name='bigrams')
+        label_vocab.index_dataset(datasets['train'],datasets['dev'],datasets['test'],
+                                 field_name='target',new_field_name='target')
 
     vocabs = {}
     vocabs['char'] = char_vocab
@@ -152,7 +186,7 @@ def load_resume_ner(path, char_embedding_path=None, bigram_embedding_path=None, 
                                            min_freq=bigram_min_freq,only_train_min_freq=only_train_min_freq)
         embeddings['bigram'] = bigram_embedding
 
-    return datasets, vocabs, embeddings
+    return datasets,vocabs,embeddings
 
 
 @cache_results(_cache_fp='need_to_defined_fp',_refresh=False)
@@ -361,32 +395,32 @@ def load_toy_ner(path,char_embedding_path=None,bigram_embedding_path=None,index_
 @cache_results(_cache_fp='cache/msraner1',_refresh=False)
 def load_msra_ner_1(path,char_embedding_path=None,bigram_embedding_path=None,index_token=True,train_clip=False,
                               char_min_freq=1,bigram_min_freq=1,only_train_min_freq=0):
-
     from fastNLP.io.loader import ConllLoader
     from utils import get_bigrams
-
     if train_clip:
-        # train_path = os.path.join(path, 'train_dev.char.bmes_clip1')
-        # test_path = os.path.join(path, 'test.char.bmes_clip1')
-        train_path = os.path.join(path, 'train_dev.char.bmes_clip2')
-        test_path = os.path.join(path, 'test.char.bmes_clip2')
+        train_path = os.path.join(path, 'train_dev.char.bmes_clip1')
+        test_path = os.path.join(path, 'test.char.bmes_clip1')
     else:
         train_path = os.path.join(path,'train_dev.char.bmes')
         test_path = os.path.join(path,'test.char.bmes')
 
-    loader = ConllLoader(['chars', 'target'])
+    loader = ConllLoader(['chars','target'])
     train_bundle = loader.load(train_path)
     test_bundle = loader.load(test_path)
+
 
     datasets = dict()
     datasets['train'] = train_bundle.datasets['train']
     datasets['test'] = test_bundle.datasets['train']
+
 
     datasets['train'].apply_field(get_bigrams,field_name='chars',new_field_name='bigrams')
     datasets['test'].apply_field(get_bigrams, field_name='chars', new_field_name='bigrams')
 
     datasets['train'].add_seq_len('chars')
     datasets['test'].add_seq_len('chars')
+
+
 
     char_vocab = Vocabulary()
     bigram_vocab = Vocabulary()
@@ -395,18 +429,18 @@ def load_msra_ner_1(path,char_embedding_path=None,bigram_embedding_path=None,ind
     # print(len(datasets['dev']))
     print(len(datasets['test']))
     print(len(datasets['train']))
-    char_vocab.from_dataset(datasets['train'], field_name='chars',
+    char_vocab.from_dataset(datasets['train'],field_name='chars',
                             no_create_entry_dataset=[datasets['test']] )
-    bigram_vocab.from_dataset(datasets['train'], field_name='bigrams',
+    bigram_vocab.from_dataset(datasets['train'],field_name='bigrams',
                               no_create_entry_dataset=[datasets['test']])
-    label_vocab.from_dataset(datasets['train'], field_name='target')
+    label_vocab.from_dataset(datasets['train'],field_name='target')
     if index_token:
-        char_vocab.index_dataset(datasets['train'], datasets['test'],
-                                 field_name='chars', new_field_name='chars')
-        bigram_vocab.index_dataset(datasets['train'], datasets['test'],
-                                 field_name='bigrams', new_field_name='bigrams')
+        char_vocab.index_dataset(datasets['train'],datasets['test'],
+                                 field_name='chars',new_field_name='chars')
+        bigram_vocab.index_dataset(datasets['train'],datasets['test'],
+                                 field_name='bigrams',new_field_name='bigrams')
         label_vocab.index_dataset(datasets['train'],datasets['test'],
-                                 field_name='target', new_field_name='target')
+                                 field_name='target',new_field_name='target')
 
     vocabs = {}
     vocabs['char'] = char_vocab
