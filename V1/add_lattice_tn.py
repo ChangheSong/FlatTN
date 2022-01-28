@@ -6,7 +6,8 @@ from fastNLP import DataSet
 
 import copy
 
-from V1.utils_ import Rule, Trie
+from V0.utils_ import Trie
+from V1.add_rule import Rule
 
 
 @cache_results(_cache_fp='need_cache_to_accelerate_rule_preprocessing', _refresh=True)
