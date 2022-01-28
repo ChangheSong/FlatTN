@@ -1123,9 +1123,6 @@ class Transformer_Encoder_Layer(nn.Module):
             if self.relative_position:
                 if rel_pos_embedding is None:
                     rel_pos_embedding = self.four_pos_fusion_embedding(pos_s,pos_e)
-            
-                # print('CEHCK output IN Transformer_Encoder_Layer: ', output.size())
-
                 output = self.attn(output, output, output, seq_len, pos_s=pos_s, pos_e=pos_e, lex_num=lex_num,
                                    rel_pos_embedding=rel_pos_embedding)
             else:
