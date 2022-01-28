@@ -20,6 +20,7 @@ from utils import get_peking_time
 from utils import norm_static_embedding
 from load_data import *
 from load_data import load_toy_ner
+from load_data_tn import load_databaker_tn
 from V1.models import BERT_SeqLabel
 from V1.add_lattice import equip_chinese_ner_with_lexicon
 from V1.add_lattice_tn import equip_chinese_tn_with_lexicon_and_rule
