@@ -21,7 +21,8 @@ from utils import norm_static_embedding
 from load_data import *
 from load_data import load_toy_ner
 from V1.models import BERT_SeqLabel
-from V1.add_lattice import equip_chinese_ner_with_lexicon, equip_chinese_tn_with_lexicon_and_rule
+from V1.add_lattice import equip_chinese_ner_with_lexicon
+from V1.add_lattice_tn import equip_chinese_tn_with_lexicon_and_rule
 from V1.models import Lattice_Transformer_SeqLabel, Transformer_SeqLabel
 
 from fastNLP import logger
